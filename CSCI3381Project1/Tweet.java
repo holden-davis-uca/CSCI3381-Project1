@@ -37,11 +37,14 @@ public class Tweet {
 		return content;
 	}
 	
-//	public String toString() {
-//		return "";
-//	}
+	public String toString() {
+		return (this.polarity + ", " + this.ID + ", " + this.user + ", " + this.content);
+	}
 	
-//	public boolean equals() {
-//		return false;
-//	}
+	public boolean equals(Tweet rhs) {
+		if (this.getID() != rhs.getID()) {
+			return false;
+		}
+		else return true;
+	}
 }
