@@ -10,6 +10,7 @@ public class Tester {
 //		
 //		
 		TweetCollection allData = new TweetCollection();
+		allData.readTweets("./CSCI3381Project1/trainingProcessed.txt");
 		
 //		
 //		

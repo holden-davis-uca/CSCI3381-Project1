@@ -3,7 +3,7 @@ package CSCI3381Project1;
 public class Tweet {
 	
 	private int polarity;
-	private int ID;
+	private long ID;
 	private String user;
 	private String content;
 	
@@ -14,7 +14,7 @@ public class Tweet {
 		content = "";
 	}
 	
-	public Tweet(int polarity, int ID, String user, String content) {
+	public Tweet(int polarity, long ID, String user, String content) {
 		this.polarity = polarity;
 		this.ID = ID;
 		this.user = user;
@@ -25,7 +25,7 @@ public class Tweet {
 		return polarity;
 	}
 
-	public int getID() {
+	public long getID() {
 		return ID;
 	}
 
