@@ -1,9 +1,12 @@
 package CSCI3381Project1;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
@@ -12,16 +15,12 @@ public class TweetCollection {
 	
 	private HashMap<Long, Tweet> TweetCollection;
 	
-	public TweetCollection() {
-		TweetCollection = new HashMap<Long, Tweet>();
-	}
-	
 	public TweetCollection(String fileName) {
 		TweetCollection = new HashMap<Long, Tweet>();
-		this.readTweets(fileName);
+		this.readIn(fileName);
 	}
 
-	public void readTweets(String fileName) {
+	public void readIn(String fileName) {
 		int i = 0;
 		BufferedReader lineReader = null;
 		try {
@@ -69,8 +68,29 @@ public class TweetCollection {
 					System.err.println("\\n!---Could Not Close Buffered Reader---!\\n");
 				}
 		}
-		System.out.println("\n!---Read " + i + " Tweets From " +  fileName + ", TweetCollection Now Contains " + TweetCollection.size() + " Tweets---!\n");
+		System.out.println("\n!---Read " + i + " Tweets From " +  fileName + ", TweetCollection Now Contains " + TweetCollection.size() + " Unique Tweets---!\n");
 
+	}
+	
+	public void writeOut(String fileName) {
+		try
+		{
+			long i = 0;
+			FileWriter fw = new FileWriter(fileName);
+			BufferedWriter myOutfile = new BufferedWriter(fw);		
+			Iterator<Entry<Long, Tweet>> twitterator = TweetCollection.entrySet().iterator();
+			while(twitterator.hasNext()){
+				HashMap.Entry<Long, Tweet> tweet = twitterator.next();
+				myOutfile.write(tweet.getValue().getPolarity() + "," + tweet.getValue().getID() + "," + tweet.getValue().getUser() + "," + tweet.getValue().getContent() + "\n");
+			}
+			myOutfile.flush();
+			myOutfile.close();
+			System.out.println("\n!---Wrote " + i + " New Tweets To " +  fileName + ", " + fileName + " Now Contains " + TweetCollection.size() + " Unique Tweets---!\n");
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			System.err.println("\n!---Did Not Save To " + fileName + "---!\n");
+		}
 	}
 	
 	public Tweet addTweet(Tweet tweet) {
@@ -100,27 +120,27 @@ public class TweetCollection {
 		return toReturn;
 	}
 	
-	public Tweet searchByUser(String User) {	
+	public ArrayList<Tweet> searchByUser(String User) {	
+		ArrayList<Tweet> userTweets = new ArrayList<Tweet>();
 		Iterator<Entry<Long, Tweet>> twitterator = TweetCollection.entrySet().iterator();
 		while(twitterator.hasNext()){
 			HashMap.Entry<Long, Tweet> tweet = twitterator.next();
 			if (tweet.getValue().getUser().equals(User)) {
-				return tweet.getValue();
+				userTweets.add(tweet.getValue());
 			}
 		}
-//		for (Entry<Long, Tweet> entry : TweetCollection.entrySet()) {
-//		    if (entry.getValue().getUser().equals(User)) {
-//		    	return entry.getValue();
-//		    }
-//		}
-		return new Tweet(-1,-1,"No Such User Found With Username", User);
-	
+		return userTweets;
 	}
 	
-//	public int[] retriveAll(){
-//		int[] arr = null;
-//		return arr;
-// 	}
+	public ArrayList<Long> retriveAll(){
+		ArrayList<Long> allIDs = new ArrayList<Long>();
+		Iterator<Entry<Long, Tweet>> twitterator = TweetCollection.entrySet().iterator();
+		while(twitterator.hasNext()){
+			HashMap.Entry<Long, Tweet> tweet = twitterator.next();
+			allIDs.add(tweet.getKey());
+		}
+		return allIDs;
+ 	}
 	
 //	public int predict(Tweet tweet) {
 //		return 0;
@@ -129,14 +149,6 @@ public class TweetCollection {
 	
 //	public double judgeAccuracy(TweetCollection tweets) {
 //		return 0.0;
-//	}
-	
-//	public void readIn(String fileName) {
-//		
-//	}
-	
-//	public void writeOut(String fileName) {
-//		
 //	}
 	
 	

@@ -38,7 +38,7 @@ public class Tweet {
 	}
 	
 	public String toString() {
-		return (this.polarity + ", " + this.ID + ", " + this.user + ", " + this.content);
+		return (this.polarity + "," + this.ID + "," + this.user + "," + this.content);
 	}
 	
 	public boolean equals(Tweet rhs) {
