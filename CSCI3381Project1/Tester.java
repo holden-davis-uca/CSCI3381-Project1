@@ -46,6 +46,14 @@ public class Tester {
 		ArrayList<Long> IDs = allData.retriveAll();
 		System.out.println("\nFound " + IDs.size() + " Unique IDs in TweetCollection");
 		
+		//Test prediction methodology on single Tweet
+		System.out.println("\nPredicting a " + allData.predict(tweet1) + " polarity for tweet: " + tweet1);
+		System.out.println("Tweet's actual polarity: " + tweet1.getPolarity());
+		
+		//Judge overall prediction accuracy
+		System.out.println("\nOverall model prediction accuracy: " + allData.judgeAccuracy(allData) * 100 + " %");
+		
+		
 		//Write out all data in TweetCollection to file
 		allData.writeOut("./CSCI3381Project1/Data.txt");
 		

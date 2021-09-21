@@ -142,14 +142,27 @@ public class TweetCollection {
 		return allIDs;
  	}
 	
-//	public int predict(Tweet tweet) {
-//		return 0;
-//		
-//	}
+	public int predict(Tweet predictionTweet) {
+
+		
+		
+		return 0;
+	}
 	
-//	public double judgeAccuracy(TweetCollection tweets) {
-//		return 0.0;
-//	}
+	public double judgeAccuracy(TweetCollection tweets) {
+		double correct = 0;
+		double incorrect = 0;
+		Iterator<Entry<Long, Tweet>> twitterator = TweetCollection.entrySet().iterator();
+		while(twitterator.hasNext()){
+			HashMap.Entry<Long, Tweet> tweet = twitterator.next();
+			int prediction = this.predict(tweet.getValue());
+			if (prediction == tweet.getValue().getPolarity()) {
+				correct++;
+			}
+			else incorrect ++;
+		}
+		return (correct / incorrect);
+	}
 	
 	
 }
