@@ -100,9 +100,22 @@ public class TweetCollection {
 		return toReturn;
 	}
 	
-//	public Tweet searchByUser(String User) {
-//		return tweet
-//	}
+	public Tweet searchByUser(String User) {	
+		Iterator<Entry<Long, Tweet>> twitterator = TweetCollection.entrySet().iterator();
+		while(twitterator.hasNext()){
+			HashMap.Entry<Long, Tweet> tweet = twitterator.next();
+			if (tweet.getValue().getUser().equals(User)) {
+				return tweet.getValue();
+			}
+		}
+//		for (Entry<Long, Tweet> entry : TweetCollection.entrySet()) {
+//		    if (entry.getValue().getUser().equals(User)) {
+//		    	return entry.getValue();
+//		    }
+//		}
+		return new Tweet(-1,-1,"No Such User Found With Username", User);
+	
+	}
 	
 //	public int[] retriveAll(){
 //		int[] arr = null;
