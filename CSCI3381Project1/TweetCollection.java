@@ -5,6 +5,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
 
 public class TweetCollection {
 	
@@ -86,10 +88,17 @@ public class TweetCollection {
 		return tweet;
 	}
 	
-//	public String toString() {
-//		String toReturn = "";
-//		return toReturn;
-//	}
+	public String toString() {
+		String toReturn = "";
+		Iterator<Entry<Long, Tweet>> twitterator = TweetCollection.entrySet().iterator();
+		int i = 0;
+		while(twitterator.hasNext() && i < 100){
+			HashMap.Entry<Long, Tweet> tweet = twitterator.next();
+			toReturn += (tweet.getValue() + "\n");
+			i++;
+		}
+		return toReturn;
+	}
 	
 //	public Tweet searchByUser(String User) {
 //		return tweet
