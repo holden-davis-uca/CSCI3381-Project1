@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.Random;
 
 public class TweetCollection {
 	
@@ -20,7 +21,7 @@ public class TweetCollection {
 		this.readIn(fileName);
 	}
 
-	public void readIn(String fileName) {
+	public String readIn(String fileName) {
 		int i = 0;
 		BufferedReader lineReader = null;
 		try {
@@ -68,14 +69,14 @@ public class TweetCollection {
 					System.err.println("\\n!---Could Not Close Buffered Reader---!\\n");
 				}
 		}
-		System.out.println("\n!---Read " + i + " Tweets From " +  fileName + ", TweetCollection Now Contains " + TweetCollection.size() + " Unique Tweets---!\n");
+		return ("\n!---Read " + i + " Tweets From " +  fileName + ", TweetCollection Now Contains " + TweetCollection.size() + " Unique Tweets---!\n");
 
 	}
 	
-	public void writeOut(String fileName) {
+	public String writeOut(String fileName) {
+		long i = 0;
 		try
 		{
-			long i = 0;
 			FileWriter fw = new FileWriter(fileName);
 			BufferedWriter myOutfile = new BufferedWriter(fw);		
 			Iterator<Entry<Long, Tweet>> twitterator = TweetCollection.entrySet().iterator();
@@ -85,12 +86,12 @@ public class TweetCollection {
 			}
 			myOutfile.flush();
 			myOutfile.close();
-			System.out.println("\n!---Wrote " + i + " New Tweets To " +  fileName + ", " + fileName + " Now Contains " + TweetCollection.size() + " Unique Tweets---!\n");
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 			System.err.println("\n!---Did Not Save To " + fileName + "---!\n");
 		}
+		return ("\n!---Wrote " + i + " New Tweets To " +  fileName + ", " + fileName + " Now Contains " + TweetCollection.size() + " Unique Tweets---!\n");
 	}
 	
 	public Tweet addTweet(Tweet tweet) {
@@ -150,6 +151,13 @@ public class TweetCollection {
 		return allIDs;
  	}
 	
+	public Tweet randomTweet() {
+		Random rand = new Random();
+		Object[] allTweets= TweetCollection.values().toArray();
+		Tweet randTweet = (Tweet) allTweets[rand.nextInt(allTweets.length)];
+		return randTweet;
+	}
+	
 	public HashMap<String, ArrayList<Integer>> createPredictionData(){
 		HashMap<String, ArrayList<Integer>> allWords = new HashMap<String, ArrayList<Integer>>();		
 		Iterator<Entry<Long, Tweet>> twitterator = TweetCollection.entrySet().iterator();
@@ -199,8 +207,10 @@ public class TweetCollection {
 	
 	public double judgeAccuracy(HashMap<String, ArrayList<Integer>> predictionData) {
 		int negativeguess = 0;
+		int neutralguess = 0;
 		int positiveguess = 0;
 		int negativereal = 0;
+		int neutralreal = 0;
 		int positivereal = 0;
 		int correct = 0;
 		int incorrect = 0;
@@ -214,6 +224,7 @@ public class TweetCollection {
 			else if (prediction == 4) {
 				positiveguess++;
 			}
+			else neutralguess++;
 			if (tweet.getValue().getPolarity() == 0) {
 				negativereal++;
 			}
@@ -221,6 +232,7 @@ public class TweetCollection {
 			{
 				positivereal++;
 			}
+			else neutralreal++;
 			if (prediction == tweet.getValue().getPolarity()) {
 				correct++;
 			}
@@ -230,6 +242,7 @@ public class TweetCollection {
 		}
 		System.out.println("\nOverall model prediction accuracy: " + correct + " correct, " + incorrect + " incorrect, " + ((double)correct/((double)(incorrect + correct))) * 100 + " % accuracy");
 		System.out.println("\tExpected number of polarity 4 Tweets: " + positiveguess + "\tActual number of polarity 4 Tweets: " + positivereal);
+		System.out.println("\tExpected number of polarity 2 Tweets: " + neutralguess + "\tActual number of polarity 2 Tweets: " + neutralreal);
 		System.out.println("\tExpected number of polarity 0 Tweets: " + negativeguess + "\tActual number of polarity 0 Tweets: " + negativereal);
 		return (correct / incorrect);
 	}

@@ -15,11 +15,18 @@ public class Tester {
 		//Start timer
 		long startTime = System.nanoTime();
 		
-		//Create new TweetCollection from given file
-		TweetCollection allData = new TweetCollection("./CSCI3381Project1/olddata.txt");
+		//Designate read in and read out file(s)
+		String inFile = "./CSCI3381Project1/testProcessed.txt";
+		String outFile = "./CSCI3381Project1/newdata.txt";
 		
-		//Print 100 random Tweets
-		System.out.println("100 random Tweets: \n\n" + allData);
+		//Create new TweetCollection from given file
+		TweetCollection allData = new TweetCollection(inFile);
+		
+		//Manually read from file
+		System.out.println(allData.readIn(inFile));
+		
+		//Print TweetCollection
+		System.out.println("200 random Tweets: \n\n" + allData);
 		
 		//Manually add Tweets
 		Tweet tweet1 = allData.addTweet(new Tweet(4,1876543211,"hdavis13","CSCI 3381 is a very fun class!"));
@@ -52,29 +59,38 @@ public class Tester {
 		//Create prediction data
 		System.out.println("\nCreating prediction data...");
 		HashMap<String, ArrayList<Integer>> testData = allData.createPredictionData();
-		System.out.println("Prediction data created!");		
+		System.out.println("Prediction data created!\n");		
 		
-		//Test prediction methodology on single Tweet
-		Tweet sadtweet = allData.addTweet(new Tweet(0,1,"hdavis13","hate bad evil angry rage terrible horrid awful waste dissapointed dissapointing horrid"));
-		Tweet happytweet = allData.addTweet(new Tweet(4,2,"hdavis13","like love amazing wonderful cool neat awesome admire worth good great incredible"));
-		System.out.println("\nPredicting a " + allData.predict(happytweet, testData) + " polarity for tweet: " + happytweet);
-		System.out.println("Tweet's actual polarity: " + happytweet.getPolarity());
-		System.out.println("\nPredicting a " + allData.predict(sadtweet, testData) + " polarity for tweet: " + sadtweet);
-		System.out.println("Tweet's actual polarity: " + sadtweet.getPolarity());
+		//Test generating random Tweets
+		Tweet randtweet1 = allData.randomTweet();
+		System.out.println("Random tweet: " + randtweet1);
+		Tweet randtweet2 = allData.randomTweet();
+		System.out.println("Random tweet: " + randtweet2);
+		Tweet randtweet3 = allData.randomTweet();
+		System.out.println("Random tweet: " + randtweet3);
+		
+		//Test prediction on single Tweet
+		System.out.println("\nPredicting a " + allData.predict(randtweet1, testData) + " polarity for tweet: " + randtweet1);
+		System.out.println("Tweet's actual polarity: " + randtweet1.getPolarity());
+		System.out.println("\nPredicting a " + allData.predict(randtweet2, testData) + " polarity for tweet: " + randtweet2);
+		System.out.println("Tweet's actual polarity: " + randtweet2.getPolarity());
+		System.out.println("\nPredicting a " + allData.predict(randtweet3, testData) + " polarity for tweet: " + randtweet3);
+		System.out.println("Tweet's actual polarity: " + randtweet3.getPolarity());
 		
 		//Judge overall prediction accuracy
 		allData.judgeAccuracy(testData);
 		
 		//Write out all data in TweetCollection to file
-		allData.writeOut("./CSCI3381Project1/newdata.txt");
+		System.out.println(allData.writeOut(outFile));
 		
 		//Stop timer
 		long stopTime = System.nanoTime();
-		long duration = (stopTime - startTime) / 1_000_000_000;
-		long mins = duration / 60;
+		long nanos = stopTime - startTime;
+		long seconds = nanos / 1_000_000_000;
+		long mins = seconds / 60;
 		
 		//Show time
-		System.out.println("\n!---Entire program took: " + duration + " seconds (" + mins + " mins)---!\n");
+		System.out.println("\n!---Entire program took: " + nanos + " nanoseconds = " + seconds + " seconds = " + mins + " mins---!\n");
 //		
 //		
 //		
