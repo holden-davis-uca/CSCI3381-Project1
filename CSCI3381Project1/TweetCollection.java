@@ -142,25 +142,87 @@ public class TweetCollection {
 		return allIDs;
  	}
 	
-	public int predict(Tweet predictionTweet) {
-
-		
-		
-		return 0;
-	}
-	
-	public double judgeAccuracy(TweetCollection tweets) {
-		double correct = 0;
-		double incorrect = 0;
+	public HashMap<String, ArrayList<Integer>> createPredictionData(){
+		HashMap<String, ArrayList<Integer>> allWords = new HashMap<String, ArrayList<Integer>>();		
 		Iterator<Entry<Long, Tweet>> twitterator = TweetCollection.entrySet().iterator();
 		while(twitterator.hasNext()){
 			HashMap.Entry<Long, Tweet> tweet = twitterator.next();
-			int prediction = this.predict(tweet.getValue());
+			String[] stufftobreak = tweet.getValue().getContent().split(" ");
+			for (String thing : stufftobreak) {
+				if (allWords.containsKey(thing)){
+					allWords.get(thing).add(tweet.getValue().getPolarity());
+				}
+				else {
+					ArrayList<Integer> newAListInt = new ArrayList<Integer>();
+					newAListInt.add(tweet.getValue().getPolarity());
+					allWords.put(thing, newAListInt);
+				}
+			}
+		}
+		return allWords;
+	}
+	
+	public int predict(Tweet predictionTweet, HashMap<String, ArrayList<Integer>> predictionData) {	
+		String[] tweetBroken = predictionTweet.getContent().split(" ");
+		double words = 0.0;
+		double totalscore = 0.0;
+		for (String thing2: tweetBroken) {
+			words++;
+			if (predictionData.containsKey(thing2)) {
+				int totalpolarity = 0;
+				for (int polarities : predictionData.get(thing2)) {
+					totalpolarity += polarities;
+				}
+				double averagepolarity = totalpolarity / predictionData.get(thing2).size();
+				totalscore += averagepolarity;
+			}
+			else totalscore += 0;
+		}
+		int averagescore = 0;
+		averagescore = (int) (words/totalscore);
+		if (averagescore < 2) {
+			return 0;
+		}
+		else if (averagescore > 2) {
+			return 4;
+		}
+		else return 0;
+	}
+	
+	public double judgeAccuracy(HashMap<String, ArrayList<Integer>> predictionData) {
+		int negativeguess = 0;
+		int positiveguess = 0;
+		int negativereal = 0;
+		int positivereal = 0;
+		int correct = 0;
+		int incorrect = 0;
+		Iterator<Entry<Long, Tweet>> twitterator = TweetCollection.entrySet().iterator();
+		while(twitterator.hasNext()){
+			HashMap.Entry<Long, Tweet> tweet = twitterator.next();
+			int prediction = this.predict(tweet.getValue(), predictionData);
+			if (prediction == 0) {
+				negativeguess++;
+			}
+			else if (prediction == 4) {
+				positiveguess++;
+			}
+			if (tweet.getValue().getPolarity() == 0) {
+				negativereal++;
+			}
+			else if (tweet.getValue().getPolarity() == 4)
+			{
+				positivereal++;
+			}
 			if (prediction == tweet.getValue().getPolarity()) {
 				correct++;
 			}
-			else incorrect ++;
+			else if (prediction != tweet.getValue().getPolarity()) {
+				incorrect++;
+			}
 		}
+		System.out.println("\nOverall model prediction accuracy: " + correct + " correct, " + incorrect + " incorrect, " + (double)correct/(double)incorrect * 100 + " % accuracy");
+		System.out.println("\tExpected number of polarity 4 Tweets: " + positiveguess + "\tActual number of polarity 4 Tweets: " + positivereal);
+		System.out.println("\tExpected number of polarity 0 Tweets: " + negativeguess + "\tActual number of polarity 0 Tweets: " + negativereal);
 		return (correct / incorrect);
 	}
 	
