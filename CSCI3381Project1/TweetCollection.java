@@ -205,7 +205,7 @@ public class TweetCollection {
 		else return 2;
 	}
 	
-	public double judgeAccuracy(HashMap<String, ArrayList<Integer>> predictionData) {
+	public String judgeAccuracy(HashMap<String, ArrayList<Integer>> predictionData) {
 		int negativeguess = 0;
 		int neutralguess = 0;
 		int positiveguess = 0;
@@ -240,11 +240,12 @@ public class TweetCollection {
 				incorrect++;
 			}
 		}
-		System.out.println("\nOverall model prediction accuracy: " + correct + " correct, " + incorrect + " incorrect, " + ((double)correct/((double)(incorrect + correct))) * 100 + " % accuracy");
-		System.out.println("\tPolarity 4 Tweets: " + positiveguess + " guessed, " + positivereal + " actual, " + (double)((double)positivereal - Math.abs((double)positivereal - (double)positiveguess))/(double)positivereal * 100 + " % accuracy");
-		System.out.println("\tPolarity 2 Tweets: " + neutralguess + " guessed, " + neutralreal + " actual, " + (double)((double)neutralreal - Math.abs((double)neutralreal - (double)neutralguess))/(double)neutralreal * 100 + " % accuracy");
-		System.out.println("\tPolarity 0 Tweets: " + negativeguess + " guessed, " + negativereal + " actual, " + (double)((double)negativereal - Math.abs((double)negativereal - (double)negativeguess))/(double)negativereal * 100 + " % accuracy");
-		return (correct / incorrect);
+		String toreturn = "";
+		toreturn += "\nOverall model prediction accuracy: " + correct + " correct, " + incorrect + " incorrect, " + ((double)correct/((double)(incorrect + correct))) * 100 + " % accuracy";
+		toreturn += "\n\tPolarity 4 Tweets: " + positiveguess + " guessed, " + positivereal + " actual";
+		toreturn += "\n\tPolarity 2 Tweets: " + neutralguess + " guessed, " + neutralreal + " actual";
+		toreturn += "\n\tPolarity 0 Tweets: " + negativeguess + " guessed, " + negativereal + " actual";
+		return toreturn;
 	}
 	
 	
