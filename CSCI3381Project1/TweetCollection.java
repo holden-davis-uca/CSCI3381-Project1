@@ -241,9 +241,9 @@ public class TweetCollection {
 			}
 		}
 		System.out.println("\nOverall model prediction accuracy: " + correct + " correct, " + incorrect + " incorrect, " + ((double)correct/((double)(incorrect + correct))) * 100 + " % accuracy");
-		System.out.println("\tExpected number of polarity 4 Tweets: " + positiveguess + "\tActual number of polarity 4 Tweets: " + positivereal);
-		System.out.println("\tExpected number of polarity 2 Tweets: " + neutralguess + "\tActual number of polarity 2 Tweets: " + neutralreal);
-		System.out.println("\tExpected number of polarity 0 Tweets: " + negativeguess + "\tActual number of polarity 0 Tweets: " + negativereal);
+		System.out.println("\tPolarity 4 Tweets: " + positiveguess + " guessed, " + positivereal + " actual, " + (double)((double)positivereal - Math.abs((double)positivereal - (double)positiveguess))/(double)positivereal * 100 + " % accuracy");
+		System.out.println("\tPolarity 2 Tweets: " + neutralguess + " guessed, " + neutralreal + " actual, " + (double)((double)neutralreal - Math.abs((double)neutralreal - (double)neutralguess))/(double)neutralreal * 100 + " % accuracy");
+		System.out.println("\tPolarity 0 Tweets: " + negativeguess + " guessed, " + negativereal + " actual, " + (double)((double)negativereal - Math.abs((double)negativereal - (double)negativeguess))/(double)negativereal * 100 + " % accuracy");
 		return (correct / incorrect);
 	}
 	
