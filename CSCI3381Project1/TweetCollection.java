@@ -111,11 +111,19 @@ public class TweetCollection {
 	public String toString() {
 		String toReturn = "";
 		Iterator<Entry<Long, Tweet>> twitterator = TweetCollection.entrySet().iterator();
-		int i = 0;
-		while(twitterator.hasNext() && i < 100){
-			HashMap.Entry<Long, Tweet> tweet = twitterator.next();
-			toReturn += (tweet.getValue() + "\n");
-			i++;
+		if (TweetCollection.size() < 200) {
+			while(twitterator.hasNext()){
+				HashMap.Entry<Long, Tweet> tweet = twitterator.next();
+				toReturn += (tweet.getValue() + "\n");
+			}
+		}
+		else {
+			int i = 0;
+			while(twitterator.hasNext() && i < 200){
+				HashMap.Entry<Long, Tweet> tweet = twitterator.next();
+				toReturn += (tweet.getValue() + "\n");
+				i++;
+			}
 		}
 		return toReturn;
 	}
@@ -186,7 +194,7 @@ public class TweetCollection {
 		else if (averagescore > 2) {
 			return 4;
 		}
-		else return 0;
+		else return 2;
 	}
 	
 	public double judgeAccuracy(HashMap<String, ArrayList<Integer>> predictionData) {
@@ -220,7 +228,7 @@ public class TweetCollection {
 				incorrect++;
 			}
 		}
-		System.out.println("\nOverall model prediction accuracy: " + correct + " correct, " + incorrect + " incorrect, " + (double)correct/(double)incorrect * 100 + " % accuracy");
+		System.out.println("\nOverall model prediction accuracy: " + correct + " correct, " + incorrect + " incorrect, " + ((double)correct/((double)(incorrect + correct))) * 100 + " % accuracy");
 		System.out.println("\tExpected number of polarity 4 Tweets: " + positiveguess + "\tActual number of polarity 4 Tweets: " + positivereal);
 		System.out.println("\tExpected number of polarity 0 Tweets: " + negativeguess + "\tActual number of polarity 0 Tweets: " + negativereal);
 		return (correct / incorrect);

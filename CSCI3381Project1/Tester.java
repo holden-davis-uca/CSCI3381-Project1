@@ -16,7 +16,7 @@ public class Tester {
 		long startTime = System.nanoTime();
 		
 		//Create new TweetCollection from given file
-		TweetCollection allData = new TweetCollection("./CSCI3381Project1/trainingProcessed.txt");
+		TweetCollection allData = new TweetCollection("./CSCI3381Project1/olddata.txt");
 		
 		//Print 100 random Tweets
 		System.out.println("100 random Tweets: \n\n" + allData);
@@ -66,7 +66,7 @@ public class Tester {
 		allData.judgeAccuracy(testData);
 		
 		//Write out all data in TweetCollection to file
-		allData.writeOut("./CSCI3381Project1/trainingProcessed.txt");
+		allData.writeOut("./CSCI3381Project1/newdata.txt");
 		
 		//Stop timer
 		long stopTime = System.nanoTime();
