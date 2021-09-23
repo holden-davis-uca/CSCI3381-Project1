@@ -56,6 +56,7 @@ public class TweetCollection {
 					}
 			} catch (Exception e2) {
 				System.err.println("\n!---No Such File or Format Error---!\n");
+				return ("\n!---No Such File or Format Error---!\n");
 			} finally {
 				if (lineReader != null)
 					try {

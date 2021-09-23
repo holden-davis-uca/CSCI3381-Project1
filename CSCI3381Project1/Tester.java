@@ -16,8 +16,9 @@ public class Tester {
 		long startTime = System.nanoTime();
 		
 		//Designate read in and read out file(s)
-		String inFile = "./CSCI3381Project1/olddata.txt";
-		String outFile = "./CSCI3381Project1/newdata.txt";
+		String fileName = "???.txt";
+		String inFile = "./CSCI3381Project1/" + fileName;
+		String outFile = "./CSCI3381Project1/" + fileName;
 		
 		//Create new TweetCollection from given file
 		TweetCollection allData = new TweetCollection(inFile);
@@ -78,7 +79,7 @@ public class Tester {
 		System.out.println("Tweet's actual polarity: " + randtweet3.getPolarity());
 		
 		//Judge overall prediction accuracy
-		TweetCollection tweetstotest = new TweetCollection("./CSCI3381Project1/testProcessed.txt");
+		TweetCollection tweetstotest = new TweetCollection("./CSCI3381Project1/???.txt");
 		System.out.println(tweetstotest.judgeAccuracy(testData));
 		
 		//Write out all data in TweetCollection to file
