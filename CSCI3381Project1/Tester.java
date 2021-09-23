@@ -26,7 +26,7 @@ public class Tester {
 		System.out.println(allData.readIn(inFile));
 		
 		//Print TweetCollection
-		System.out.println("200 random Tweets: \n\n" + allData);
+		System.out.println("200 random Tweets (if they exist): \n\n" + allData);
 		
 		//Manually add Tweets
 		Tweet tweet1 = allData.addTweet(new Tweet(4,1876543211,"hdavis13","CSCI 3381 is a very fun class!"));

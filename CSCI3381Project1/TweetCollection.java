@@ -16,11 +16,14 @@ public class TweetCollection {
 	
 	private HashMap<Long, Tweet> TweetCollection;
 	
+	//Parameterized constructor
 	public TweetCollection(String fileName) {
 		TweetCollection = new HashMap<Long, Tweet>();
 		this.readIn(fileName);
 	}
-
+	
+	//Read in from a file given by a parameter, each line becomes a new tweet and is added to the TweetCollection
+	//Also counts the number of tweets read in and shows the updated number of tweets in TweetCollection
 	public String readIn(String fileName) {
 		int i = 0;
 		BufferedReader lineReader = null;
@@ -73,6 +76,8 @@ public class TweetCollection {
 
 	}
 	
+	//Write out to a file given by a parameter, data written the exact same way as was read in so input and output files can be used interchangeably 
+	//Also counts the number of tweets written out
 	public String writeOut(String fileName) {
 		long i = 0;
 		try
@@ -81,6 +86,7 @@ public class TweetCollection {
 			BufferedWriter myOutfile = new BufferedWriter(fw);		
 			Iterator<Entry<Long, Tweet>> twitterator = TweetCollection.entrySet().iterator();
 			while(twitterator.hasNext()){
+				i++;
 				HashMap.Entry<Long, Tweet> tweet = twitterator.next();
 				myOutfile.write(tweet.getValue().getPolarity() + "," + tweet.getValue().getID() + "," + tweet.getValue().getUser() + "," + tweet.getValue().getContent() + "\n");
 			}
@@ -91,24 +97,28 @@ public class TweetCollection {
 			e.printStackTrace();
 			System.err.println("\n!---Did Not Save To " + fileName + "---!\n");
 		}
-		return ("\n!---Wrote " + i + " New Tweets To " +  fileName + ", " + fileName + " Now Contains " + TweetCollection.size() + " Unique Tweets---!\n");
+		return ("\n!---Wrote " + i + " Tweets To " +  fileName + "---!\n");
 	}
 	
+	//Add tweet to collection and return it
 	public Tweet addTweet(Tweet tweet) {
 		TweetCollection.put(tweet.getID(), tweet);
 		return tweet;
 	}
 	
+	//Remove tweet from collection and return it
 	public Tweet removeTweet(Tweet tweet) {
 		TweetCollection.remove(tweet.getID());
 		return tweet;
 	}
 	
+	//Search for and return a tweet given the ID
 	public Tweet searchByID(long ID) {
 		Tweet tweet = TweetCollection.get(ID);
 		return tweet;
 	}
 	
+	//toString method, returns 200 tweets from TweetCollection (if that many exist)
 	public String toString() {
 		String toReturn = "";
 		Iterator<Entry<Long, Tweet>> twitterator = TweetCollection.entrySet().iterator();
@@ -129,6 +139,8 @@ public class TweetCollection {
 		return toReturn;
 	}
 	
+	//Search for and return an ArrayList of tweets by a given user
+	//Match input user string to each tweet's user string
 	public ArrayList<Tweet> searchByUser(String User) {	
 		ArrayList<Tweet> userTweets = new ArrayList<Tweet>();
 		Iterator<Entry<Long, Tweet>> twitterator = TweetCollection.entrySet().iterator();
@@ -141,6 +153,7 @@ public class TweetCollection {
 		return userTweets;
 	}
 	
+	//Return an ArrayList of all IDs in the TweetCollection
 	public ArrayList<Long> retriveAll(){
 		ArrayList<Long> allIDs = new ArrayList<Long>();
 		Iterator<Entry<Long, Tweet>> twitterator = TweetCollection.entrySet().iterator();
@@ -151,6 +164,7 @@ public class TweetCollection {
 		return allIDs;
  	}
 	
+	//Return a random tweet (for testing purposes)
 	public Tweet randomTweet() {
 		Random rand = new Random();
 		Object[] allTweets= TweetCollection.values().toArray();
@@ -158,6 +172,36 @@ public class TweetCollection {
 		return randTweet;
 	}
 	
+	/*
+	 * All of the code pertaining to the prediction methodology and algorithm (effectively everything below this comment) was written from scratch
+	 * 
+	 * The idea behind this model is as follows:
+	 * 		
+	 * 		TRAINING DATA
+	 * 		For each Tweet object in the TweetCollection, split the "content" string into words (separated by spacebar input)
+	 * 		For each word, add the Tweet's "polarity" int to an array for that specific word
+	 * 		Effectively, the training becomes a hashmap where each key, represented by a string, is each word found in the TweetCollection
+	 * 		Each key's corresponding value is an integer array
+	 * 		The size of the array is the number of occurrences of that word, while the value of each element in the array is the polarity of a Tweet it was found in
+	 * 		Therefore, we can effectively compute an average polarity for each word by summing the contents of the array and dividing by the number of elements
+	 * 		
+	 * 		PREDICTION
+	 * 		For any given Tweet to predict on, its "content" string is similarly split
+	 * 		Each word in the tweet is given the previously computed average polarity
+	 * 		If the word is not found in the array, it is given a polarity of two
+	 * 		The sum of these polarities is then divided by the number of words to return an average polarity of the Tweet
+	 * 
+	 * 		MODEL ACCURACY
+	 * 		Judging the accuracy of the model takes a single parameter, the previously created prediction data
+	 * 		It then runs the prediction on every Tweet in the TweetCollection that called it
+	 * 		After a prediction returns a value, it is compared to the actual polarity of the Tweet
+	 * 		In this manner, the number of correct and incorrect guesses can be tallied
+	 * 		The ratio of these two numbers * 100 gives the percentage accuracy of the model on the TweetCollection that called it using the given prediction data
+	 * 		In addition, the number of guessed vs actual tweets is tallied for each polarity to provide further data for analysis
+	 */
+	
+	//Create prediction data from the TweetCollection that called it
+	//Return a HashMap with string as a key and an ArrayList of Integers as the value
 	public HashMap<String, ArrayList<Integer>> createPredictionData(){
 		HashMap<String, ArrayList<Integer>> allWords = new HashMap<String, ArrayList<Integer>>();		
 		Iterator<Entry<Long, Tweet>> twitterator = TweetCollection.entrySet().iterator();
@@ -178,6 +222,8 @@ public class TweetCollection {
 		return allWords;
 	}
 	
+	//Predict the polarity of a given tweet using the given prediction data
+	//Return the predicted polarity of the tweet (0,2 or 4)
 	public int predict(Tweet predictionTweet, HashMap<String, ArrayList<Integer>> predictionData) {	
 		String[] tweetBroken = predictionTweet.getContent().split(" ");
 		double words = 0.0;
@@ -205,6 +251,8 @@ public class TweetCollection {
 		else return 2;
 	}
 	
+	//Given the prediction data, judge the overall accuracy of the prediction methodology by testing predict on every tweet and tallying correct/incorrect guesses
+	//Return a string containing the % accuracy, as well as the raw values and a breakdown by polarity
 	public String judgeAccuracy(HashMap<String, ArrayList<Integer>> predictionData) {
 		int negativeguess = 0;
 		int neutralguess = 0;
