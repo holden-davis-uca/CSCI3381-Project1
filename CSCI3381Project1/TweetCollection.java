@@ -239,7 +239,7 @@ public class TweetCollection {
 				double averagepolarity = totalpolarity / predictionData.get(thing2).size();
 				totalscore += averagepolarity;
 			}
-			else totalscore += 0;
+			else totalscore += 2;
 		}
 		int averagescore = 0;
 		averagescore = (int) (words/totalscore);

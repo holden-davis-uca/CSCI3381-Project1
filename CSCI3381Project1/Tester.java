@@ -16,9 +16,12 @@ public class Tester {
 		long startTime = System.nanoTime();
 		
 		//Designate read in and read out file(s)
-		String fileName = "???.txt";
-		String inFile = "./CSCI3381Project1/" + fileName;
-		String outFile = "./CSCI3381Project1/" + fileName;
+		//Testing configuration (where trainingProcessed contains 1.6 million tweets, and testProcessed contains 498 tweets):
+		//	Create TweetCollection from trainingProcessed, generate testing data from same collection, test on TweetCollection created from testProcessed
+		//	Contents of TweetCollection (basically trainingProcessed with duplicates removed + 3 created tweets) will be written to out.txt
+		String inFile = "./CSCI3381Project1/trainingProcessed.txt";
+		String inFile2 = "./CSCI3381Project1/testProcessed.txt";
+		String outFile = "./CSCI3381Project1/out.txt";
 		
 		//Create new TweetCollection from given file
 		TweetCollection allData = new TweetCollection(inFile);
@@ -36,7 +39,7 @@ public class Tester {
 		System.out.println("Added Tweet: " + tweet2);
 		Tweet tweet3 = allData.addTweet(new Tweet(0,1213542069,"hdavis13","Dr. Doderer why are you reading this Tweet?"));
 		System.out.println("Added Tweet: " + tweet3);
-		System.out.println("Added Tweet: " + allData.addTweet(new Tweet(0,1213542061,"hdavis13","This is quite possibly the most exciting Tweet ever written!")));
+		System.out.println("Added Tweet: " + allData.addTweet(new Tweet(4,1213542061,"hdavis13","This is quite possibly the most exciting Tweet ever written!")));
 		
 		//Manually remove Tweet
 		System.out.println("Removed Tweet: " + allData.removeTweet(tweet3));
@@ -79,7 +82,7 @@ public class Tester {
 		System.out.println("Tweet's actual polarity: " + randtweet3.getPolarity());
 		
 		//Judge overall prediction accuracy
-		TweetCollection tweetstotest = new TweetCollection("./CSCI3381Project1/???.txt");
+		TweetCollection tweetstotest = new TweetCollection(inFile2);
 		System.out.println(tweetstotest.judgeAccuracy(testData));
 		
 		//Write out all data in TweetCollection to file
