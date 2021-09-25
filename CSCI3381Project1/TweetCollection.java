@@ -232,7 +232,7 @@ public class TweetCollection {
 		for (String thing2: tweetBroken) {
 			words++;
 			if (predictionData.containsKey(thing2)) {
-				int totalpolarity = 0;
+				double totalpolarity = 0;
 				for (int polarities : predictionData.get(thing2)) {
 					totalpolarity += polarities;
 				}
@@ -241,12 +241,12 @@ public class TweetCollection {
 			}
 			else totalscore += 2;
 		}
-		int averagescore = 0;
-		averagescore = (int) (words/totalscore);
-		if (averagescore < 2) {
+		double averagescore = 0;
+		averagescore = (words/totalscore);
+		if (averagescore < 1.33) {
 			return 0;
 		}
-		else if (averagescore > 2) {
+		else if (averagescore > 2.66) {
 			return 4;
 		}
 		else return 2;
