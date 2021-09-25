@@ -19,6 +19,7 @@ public class Tester {
 		//Testing configuration (where trainingProcessed contains 1.6 million tweets, and testProcessed contains 498 tweets):
 		//	Create TweetCollection from trainingProcessed, generate testing data from same collection, test on TweetCollection created from testProcessed
 		//	Contents of TweetCollection (basically trainingProcessed with duplicates removed + 3 created tweets) will be written to out.txt
+		//	Contents of tweetstotest will then be appended to out.txt
 		String inFile = "./CSCI3381Project1/trainingProcessed.txt";
 		String inFile2 = "./CSCI3381Project1/testProcessed.txt";
 		String outFile = "./CSCI3381Project1/out.txt";
@@ -85,8 +86,10 @@ public class Tester {
 		TweetCollection tweetstotest = new TweetCollection(inFile2);
 		System.out.println(tweetstotest.judgeAccuracy(testData));
 		
-		//Write out all data in TweetCollection to file
+		//Write out all training data to file
 		System.out.println(allData.writeOut(outFile));
+		//Write out all testing data to file
+		System.out.println(tweetstotest.writeOutAppend(outFile));
 		
 		//Stop timer
 		long stopTime = System.nanoTime();

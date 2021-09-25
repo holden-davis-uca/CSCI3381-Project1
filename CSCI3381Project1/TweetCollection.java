@@ -101,6 +101,29 @@ public class TweetCollection {
 		return ("\n!---Wrote " + i + " Tweets To " +  fileName + "---!\n");
 	}
 	
+	//writeOut() except appending instead of overwriting; for use when writing out two separate collections to the same file
+	public String writeOutAppend(String fileName) {
+		long i = 0;
+		try
+		{
+			FileWriter fw = new FileWriter(fileName, true);
+			BufferedWriter myOutfile = new BufferedWriter(fw);		
+			Iterator<Entry<Long, Tweet>> twitterator = TweetCollection.entrySet().iterator();
+			while(twitterator.hasNext()){
+				i++;
+				HashMap.Entry<Long, Tweet> tweet = twitterator.next();
+				myOutfile.write(tweet.getValue().getPolarity() + "," + tweet.getValue().getID() + "," + tweet.getValue().getUser() + "," + tweet.getValue().getContent() + "\n");
+			}
+			myOutfile.flush();
+			myOutfile.close();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			System.err.println("\n!---Did Not Save To " + fileName + "---!\n");
+		}
+		return ("\n!---Appended " + i + " Tweets To " +  fileName + "---!\n");
+	}
+	
 	//Add tweet to collection and return it
 	public Tweet addTweet(Tweet tweet) {
 		TweetCollection.put(tweet.getID(), tweet);
@@ -227,10 +250,10 @@ public class TweetCollection {
 	//Return the predicted polarity of the tweet (0,2 or 4)
 	public int predict(Tweet predictionTweet, HashMap<String, ArrayList<Integer>> predictionData) {	
 		String[] tweetBroken = predictionTweet.getContent().split(" ");
-		double words = 0.0;
+		double numwords = 0.0;
 		double totalscore = 0.0;
 		for (String thing2: tweetBroken) {
-			words++;
+			numwords++;
 			if (predictionData.containsKey(thing2)) {
 				double totalpolarity = 0;
 				for (int polarities : predictionData.get(thing2)) {
@@ -242,7 +265,7 @@ public class TweetCollection {
 			else totalscore += 2;
 		}
 		double averagescore = 0;
-		averagescore = (words/totalscore);
+		averagescore = (totalscore/numwords);
 		if (averagescore < 1.33) {
 			return 0;
 		}
