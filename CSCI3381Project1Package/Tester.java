@@ -1,4 +1,4 @@
-package CSCI3381Project1;
+package CSCI3381Project1Package;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,9 +20,9 @@ public class Tester {
 		//	Create TweetCollection from trainingProcessed, generate testing data from same collection, test on TweetCollection created from testProcessed
 		//	Contents of TweetCollection (basically trainingProcessed with duplicates removed + 3 created tweets) will be written to out.txt
 		//	Contents of tweetstotest will then be appended to out.txt
-		String inFile = "./CSCI3381Project1/trainingProcessed.txt";
-		String inFile2 = "./CSCI3381Project1/testProcessed.txt";
-		String outFile = "./CSCI3381Project1/out.txt";
+		String inFile = "./CSCI3381Project1Package/trainingProcessed.txt";
+		String inFile2 = "./CSCI3381Project1Package/testProcessed.txt";
+		String outFile = "./CSCI3381Project1Package/out.txt";
 		
 		//Create new TweetCollection from given file
 		TweetCollection allData = new TweetCollection(inFile);

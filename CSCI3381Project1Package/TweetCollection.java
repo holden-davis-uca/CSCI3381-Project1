@@ -1,4 +1,4 @@
-package CSCI3381Project1;
+package CSCI3381Project1Package;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

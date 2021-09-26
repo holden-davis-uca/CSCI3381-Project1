@@ -1,4 +1,4 @@
-package CSCI3381Project1;
+package CSCI3381Project1Package;
 
 public class Tweet {
 	
