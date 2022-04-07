@@ -1,4 +1,4 @@
-Project 1 - CSCI 3381 - CRN 18741 - Fall 2021 - Holden Davis - Dr. Doderer
+# Project 1 for CSCI 3381 - Object Oriented Software Development with Java
 
 Branch main works on the latest version of eclipse, branch photon-compatible works on the provided version of eclipse. (Each branch contains both the project files and the .jar file)
 
